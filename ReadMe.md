@@ -1,1 +1,1 @@
-drools5包含了drools5系列的一下演示
+drools5-demo鍖呭惈浜哾rools5绯诲垪鐨勪竴浜涘父瑙勭敤娉曠殑婕旂ず
