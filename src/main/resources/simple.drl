@@ -1,0 +1,83 @@
+package com.xfboy.drl.simple
+import com.xfboy.simple.Customer;
+
+//import function com.xfboy.simple.PrintTools.printUName;
+import com.xfboy.simple.PrintTools;
+// 定义FACT对象
+declare Address
+	@author(quzishen) // 元数据，仅用于描述信息，无执行功能
+	@createTime(2016-7-24)
+	city : String @maxLengh(30)
+	postno : int
+end
+
+/**
+规则文件的每个元素是有顺序的
+*/
+function void printName(String name){
+    System.out.println("新增了一名："+name);
+}
+function void printInfo(String name){
+       PrintTools.printUName(name+"2");
+}
+//无参查询
+query "query customer2 count"
+    Customer();
+end
+query "queryLi"
+    $cus:Customer(name matches "李.*");
+end
+//参数化查询
+query "searchCus"(int $age,String $name)
+    $cus:Customer(age==$age,name==$name)
+end
+//rule1
+rule "add cust"
+//    salience 2
+    when
+        eval(true);
+    then
+        String name="李龙";
+        Customer customer=new Customer();
+        customer.setName(name);
+        customer.setAge(20);
+        insert(customer);
+        printName(name);
+end
+//rule2
+rule "invoke javaClass"
+    when
+        eval(true);
+    then
+       PrintTools.printUName("lily");
+       printInfo("lily");
+end
+//rule3
+rule "initAddr"
+    salience 2
+    when
+        eval(true);
+    then
+        Address address=new Address();
+        address.setCity("上海");
+        address.setPostno(200110);
+        insert(address);
+end
+
+//rule4
+rule "disAddr"
+    salience 1
+    when
+        $addr:Address();
+    then
+        System.out.println(String.format("city:%s,postno:%s",$addr.getCity(),$addr.getPostno()));
+end
+//rule5
+rule rule5
+    date-effective "2016-08-07 15:12:10" // 到了时间才会触发
+    no-loop true
+    when
+        $addr:Address()
+    then
+        System.out.println("时间到了,city:"+$addr.getCity());
+end

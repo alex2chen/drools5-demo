@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:drools="http://drools.org/schema/drools-spring"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://drools.org/schema/drools-spring http://drools.org/schema/drools-spring.xsd">
+    <!--<bean id="vip" class="com.xfboy.login.Vip"/>-->
+    <bean id="loginService" class="com.xfboy.login.LoginServiceImpl">
+        <!--<property name="vip" ref="vip"/>-->
+    </bean>
+    <drools:kbase id="kbase">
+        <drools:resources>
+            <drools:resource type="DRL" source="classpath:Login.drl"/>
+        </drools:resources>
+    </drools:kbase>
+    <drools:ksession type="stateful" kbase="kbase" id="ksession"/>
+
+</beans>

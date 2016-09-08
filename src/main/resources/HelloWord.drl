@@ -1,0 +1,37 @@
+package com.xfboy.drl.hello
+import com.xfboy.simple.HelloWord;
+
+//rule 1
+rule "Say Hello"
+    dialect "mvel"
+    no-loop true
+    when
+        $h:HelloWord( sayType == HelloWord.SAYHELLO)
+    then
+        System.out.println("rule1");
+        $h.setMessage("SayHello");
+        modify($h){//会再次触发rule2
+            setMessage("SayHello2"),
+            sayType=$h.SAYHELLO
+        }
+end
+//rule 2
+rule "Hello World"
+    dialect "mvel"
+    when
+       m : HelloWord( sayType == HelloWord.SAYHELLO)
+    then
+         System.out.println( "rule2" );
+         m.setMessage("hello world");
+end
+
+//rule 3
+rule "Say Bye"
+    dialect "java"
+    when
+        HelloWord( sayType == HelloWord.SAYBYE)
+    then
+       System.out.println("rule3");
+    //   String s=new String("test");
+    //   insert(s);
+end

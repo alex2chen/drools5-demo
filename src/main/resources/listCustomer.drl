@@ -1,0 +1,27 @@
+package com.xfboy.drl.listCustomer
+import com.xfboy.simple.Customer;
+import java.util.List;
+
+query "query customer1 count"
+    Customer();
+end
+
+
+rule "search li"
+    salience 1
+    when
+        $customer:Customer(name matches "李.*");
+    then
+        System.out.println($customer.getName());
+end
+
+rule "add cust"
+    salience 2
+    when
+        eval(true);
+    then
+        Customer customer=new Customer();
+        customer.setName("李连杰");
+        insert(customer);
+        System.out.println("再新增一个");
+end

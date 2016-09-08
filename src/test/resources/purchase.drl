@@ -1,0 +1,19 @@
+import com.xfboy.junit.fact.Purchase;
+
+rule "Discount"
+dialect "mvel"
+when
+    p : Purchase(customer.age < 18)
+then
+    p.getTicket().setDiscount(true);
+    p.getTicket().setPrice(10);
+end
+
+rule "No discount"
+dialect "java"
+when
+    p : Purchase(customer.age > 18);
+then
+    p.getTicket().setDiscount(false);
+    p.getTicket().setPrice(12);
+end
